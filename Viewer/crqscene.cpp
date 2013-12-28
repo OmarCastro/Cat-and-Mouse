@@ -268,7 +268,7 @@ void CRQScene::drawGrid( CRLab * l_b )
 
 int CRQScene::drawRobot( CRLab * l_b )
 {
-    cout << "CRQScene::drawRobot\n";
+    //cout << "CRQScene::drawRobot\n";
 	lab = l_b;
 	CRRobot *rob;
     if (labStatus == 0)  // Valida se lab ja existe
@@ -398,9 +398,9 @@ int CRQScene::drawRobot( CRLab * l_b )
 
         CRVertice pos = lab->targetListRef()->begin()->Position();
 
-        cout   << "original beacon position: " <<  pos.x()
-               << "  " << pos.y()
-               << "\nrob positions: " << rob->x() << "  "<< rob->y() << "\n";
+        //cout   << "original beacon position: " <<  pos.x()
+        //       << "  " << pos.y()
+        //       << "\nrob positions: " << rob->x() << "  "<< rob->y() << "\n";
 
 
         //double target_x = target->Position().x() * zoom - radius;

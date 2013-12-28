@@ -51,6 +51,7 @@ class cbMeasure
         virtual ~cbMeasure(void) {}
 };
 
+
 class cbBoolMeasure : public cbMeasure
 {
 	public:
@@ -351,5 +352,6 @@ private:
 	void update(GPSMeasure ideal);
 	GPSMeasure value;
 };
+
 
 #endif

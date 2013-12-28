@@ -101,9 +101,10 @@ static const char *GRID =
 static const char *SIMPARAM =
         "<Parameters SimTime=\"1800\" KeyTime=\"1350\" CycleTime=\"50\"\n"
 		"\t\tCompassNoise=\"2.0\" BeaconNoise=\"2.0\" ObstacleNoise=\"0.1\"\n"
-		"\t\tNRequestsPerCycle=\"4\"\n"
+        "\t\tNRequestsPerCycle=\"5\"\n"
 		"\t\tCompassLatency=\"4\" BeaconLatency=\"4\"\n"
         "\t\tMotorsNoise=\"1.5\"\n"
+        "\t\tGPS=\"On\"\n"
         "\t\tReturnTimePenalty=\"25\" ArrivalTimePenalty=\"100\"\n"
         "\t\tCollisionWallPenalty=\"2\" CollisionRobotPenalty=\"2\"\n"
         "\t\tTargetReward=\"100\" HomeReward=\"100\"/>\n";
@@ -113,7 +114,7 @@ cbSimulator::cbSimulator()
 {
 	lab = 0;
 	curCycle = 0;
-    endCycle = 3000; // provisório
+    endCycle = 3000; // provisï¿½rio
 	cycle = 50;
 
 	curState = nextState = INIT;
@@ -558,7 +559,7 @@ void cbSimulator::step()
 	//cout.form("Reading view commands (%u)\n", curCycle);
 	ViewCommands();
 	PanelCommands();
-
+ 
 	if (curState == RUNNING)
 	{
 		//cout.form("Processing a RUNNING cycle (%u)\n", curCycle);
@@ -761,7 +762,9 @@ void cbSimulator::RobotActions()
 				robot->requestSensor(action.sensorRequests[r]);
 			}
 
-			if (action.sayReceived)   robot->setSayMessage(action.sayMessage);
+            if (action.sayReceived) robot->setSayMessage(action.sayMessage);
+
+
 
 			action.sensorRequests.clear();
 		}

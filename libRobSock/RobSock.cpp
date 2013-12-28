@@ -41,17 +41,17 @@ void *Link(void)
 }
 
 
-int InitRobot(char *rob_name, int rob_id, char *host)
+int InitRobot(char *rob_name, int rob_id, char *host, int type)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, host);
+    robLink=new CRobLink(rob_name, rob_id, host,type);
     return robLink->status();
 }
 
-int InitRobot2(char *rob_name, int rob_id, double IRSensorAngles[NUM_IR_SENSORS], char *host)
+int InitRobot2(char *rob_name, int rob_id, double IRSensorAngles[NUM_IR_SENSORS], char *host, int type)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, IRSensorAngles, host);
+    robLink=new CRobLink(rob_name, rob_id, type, IRSensorAngles, host);
     return robLink->status();
 }
 

@@ -53,10 +53,23 @@ class CRRobot
 		 */
 		void setName( const char *name );
 
-		/*! Returns the robot name.
+        /*! Returns the robot namr.
 		 * \sa setName
 		 */
 		char*  name( void );
+
+        /*! Sets the robot type.
+         * \param name a string with the robot name. The Maximum allowed
+         * size is MAXROBOTNAME.
+         * \sa name
+         */
+        void setType( const int type );
+
+        /*! Returns the robot type.
+         * \sa setType
+         */
+        int  type( void );
+
 	
 		/*! Sets the robot id.
 		 *  \param id an integer between 0 and grid.howManyElements().
@@ -183,6 +196,7 @@ class CRRobot
 		char robotName[MAXROBOTNAME];
 		char robotCollision[8];
 		int  robotId;
+        int  robotType;
 		int  robotScore;
 		int  robotCurrentTime;
 		int  robotArrivalTime;

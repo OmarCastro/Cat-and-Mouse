@@ -78,6 +78,8 @@ bool cbReceptionHandler::startElement( const QString&, const QString&, const QSt
         if (!name.isNull()) robot->setName(name.toLatin1().constData());
 		const QString &id = attr.value(QString("Id"));
 		if (!id.isNull()) robot->setId(id.toUInt());
+        const QString &type = attr.value(QString("Type"));
+        if (!id.isNull()) robot->setType(type.toUInt());
 	}
 	else if (tag == "RobotBeacon")
 	{

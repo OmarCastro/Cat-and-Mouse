@@ -164,6 +164,8 @@ bool StructureParser::startElement(const QString&, const QString&,
 		/* process attributes */
 		readAttributeUInt(attr, "Time", &measures.time);
 	}
+
+
 	else if (tag == "Sensors")
 	{
 		/* process attributes */

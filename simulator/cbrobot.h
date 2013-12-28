@@ -60,6 +60,8 @@ public:
 	const char *Name();
 	void setId(unsigned int id);
 	unsigned int Id();
+    void setType(unsigned int id);
+    unsigned int Type();
 	void setIRSensorAngle(unsigned int irId, double irAngle);
 
 	void setSimulator(cbSimulator *s);
@@ -193,6 +195,7 @@ protected:  // class data members
 
 	char *name;
 	unsigned int id;
+    unsigned int type;
 
     unsigned int score, scorePenalties,
             arrivalTime,         // time until turned on returning Led

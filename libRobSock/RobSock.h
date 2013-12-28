@@ -58,7 +58,7 @@ typedef unsigned char bool;
  *          host - Host where simulator is running 
  *  Returns -1 in case of error
  */
-extern int           InitRobot(char *name,int id, char *host);
+extern int           InitRobot(char *name,int id, char *host, int type=0);
 
 /*! Initializes Robot and Connects to Simulator 
  *  Parameters : 
@@ -68,7 +68,7 @@ extern int           InitRobot(char *name,int id, char *host);
  *                           with respect to the front of the robot (in degrees).
  *   Returns -1 in case of error
  */
-extern int           InitRobot2(char *name,int id, double IRSensorAngles[4], char *host);
+extern int           InitRobot2(char *name,int id, double IRSensorAngles[4], char *host, int type=0);
 
 /*! Initializes Robot that also works as the beacon and Connects to Simulator 
  *  Parameters : 
@@ -119,6 +119,7 @@ struct beaconMeasure {
                                /*   only valid if beaconVisible is true */
 };
 
+
 /* GetNumberOfBeacons returns the number of beacons in the lab
  */
 extern int GetNumberOfBeacons(void);     
@@ -136,7 +137,8 @@ extern bool            IsCompassReady(void);
 /* GetCompassSensor value is the direction of Robot in Ground 
  * coordinates (-180.0, 180.0) 
  */
-extern double          GetCompassSensor(void);    
+extern double          GetCompassSensor(void);
+
     
 /*! Indicates if a new ground measure has arrived. 
  *  The value of GetGroundSensor is invalid when IsGroundReady returns false

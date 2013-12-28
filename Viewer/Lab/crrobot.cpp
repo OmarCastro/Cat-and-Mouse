@@ -51,9 +51,19 @@ char* CRRobot::name( void )
 	return robotName;
 }
 
+void CRRobot::setType( int type )
+{
+    robotType = type;
+}
+
+int CRRobot::type( void )
+{
+    return robotType;
+}
+
 void CRRobot::setId( int id )
 {
-	robotId = id;
+    robotId = id;
 }
 
 int CRRobot::id( void )

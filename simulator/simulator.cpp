@@ -113,14 +113,14 @@ int     cbRobot::targetReward = 100;
 int     cbRobot::homeReward = 100;
 
 //Requests
-unsigned int    cbRobot::maxSensorsRequested = 4;
+unsigned int    cbRobot::maxSensorsRequested = 5;
 
 bool    cbIRSensor::sensorRequestable        = true;
 bool    cbBeaconSensor::sensorRequestable    = true;
 bool    cbCompassSensor::sensorRequestable   = true;
 bool    cbGroundSensor::sensorRequestable    = true;
 bool    cbCollisionSensor::sensorRequestable = false;
-bool    cbGPSSensor::sensorRequestable       = false;
+bool    cbGPSSensor::sensorRequestable       = true;
 
 //Latencies
 int     cbIRSensor::sensorLatency        =  0;

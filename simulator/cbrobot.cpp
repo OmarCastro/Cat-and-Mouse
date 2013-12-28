@@ -142,6 +142,14 @@ unsigned int cbRobot::Id()
 	return id;
 } 
 
+void cbRobot::setType(unsigned int id){
+    type = id;
+}
+
+unsigned int cbRobot::Type(){
+    return type;
+}
+
 const char *cbRobot::curStateAsString()
 {
     return StrState[state()];
@@ -243,7 +251,7 @@ void cbRobot::requestSensor(QString sensorStrId)
             sensors[s]->requested = true;
             nSensorsRequested++;
 		    break;
-		}
+        }
 	}
 
     if(s==sensors.size())
@@ -741,6 +749,7 @@ unsigned int cbRobot::toXml(char *xml, unsigned int len) // len = buffer size no
 	/* add attributes */
 	n += sprintf(xml+n, " Name=\"%s\"", name);
 	n += sprintf(xml+n, " Id=\"%d\"", id);
+    n += sprintf(xml+n, " Type=\"%d\"",type);
 	n += sprintf(xml+n, " Time=\"%u\"", simulator->curTime());
 	n += sprintf(xml+n, " Score=\"%u\"", score);
 	n += sprintf(xml+n, " ArrivalTime=\"%u\"", arrivalTime);

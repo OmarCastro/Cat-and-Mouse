@@ -90,6 +90,10 @@ bool CRQCommHandler::startElement( const QString&, const QString&,
                 if( !id.isNull() )
                     robot->setId( id.toInt() );
 
+                const QString type = attr.value( QString( "Type" ) );
+                if( !type.isNull() )
+                    robot->setType( type.toInt() );
+
                 const QString score = attr.value( QString( "Score" ) );
                 if( !score.isNull() )
                     robot->setScore( score.toInt() );

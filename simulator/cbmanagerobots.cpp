@@ -202,6 +202,14 @@ void cbManageRobots::on_pushButton_AddRobot_clicked()
     if (!robName.isEmpty())
         robotArgs << "-robname" << robName;
 
+    robotArgs << "-type";
+    if(ui->radioButton_Cat->isChecked()){
+        robotArgs << "cat";
+    }else{
+        robotArgs << "mouse";
+    }
+
+
     QProcess *robProcess = new QProcess(this);
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 

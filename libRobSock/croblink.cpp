@@ -37,12 +37,12 @@ using namespace std;
 /*!
  * Composes register message and sends it to server.
  */
-void CRobLink::send_register_message(char *rob_name,int rob_id)
+void CRobLink::send_register_message(char *rob_name,int rob_id, int type)
 {
     // register in server
 	char xml[MSGMAXSIZE];
-    const char fmt[] = "<Robot Name=\"%s\" Id=\"%d\"></Robot>";
-	sprintf(xml, fmt, rob_name, rob_id);
+    const char fmt[] = "<Robot Name=\"%s\" Id=\"%d\" Type=\"%d\"></Robot>";
+    sprintf(xml, fmt, rob_name, rob_id,type);
 
     if(port.send_info(xml, strlen(xml)+1)!=true)
     {
@@ -52,13 +52,13 @@ void CRobLink::send_register_message(char *rob_name,int rob_id)
     }
 }
 
-void CRobLink::send_register_message(char *rob_name,int rob_id, double irSensorAngles[])
+void CRobLink::send_register_message(char *rob_name,int rob_id, int type, double irSensorAngles[])
 {
     // register in server
 	char xml[MSGMAXSIZE];
 
-    int n = sprintf(xml, "<Robot Name=\"%s\" Id=\"%d\">",
-                    rob_name, rob_id);
+    int n = sprintf(xml, "<Robot Name=\"%s\" Id=\"%d\" Type=\"%d\">",
+                    rob_name, rob_id,type);
 
     for(int i=0; i < NUM_IR_SENSORS; i++)
         n += sprintf(xml+n,"<IRSensor Id=\"%d\" Angle=\"%g\"/>",
@@ -77,12 +77,12 @@ void CRobLink::send_register_message(char *rob_name,int rob_id, double irSensorA
 /*!
  * Composes register message and sends it to server.
  */
-void CRobLink::send_robotbeacon_register_message(char *rob_name,int rob_id, double height)
+void CRobLink::send_robotbeacon_register_message(char *rob_name, int rob_id, double height)
 {
     // register in server
 	char xml[MSGMAXSIZE];
     const char fmt[] = "<RobotBeacon Name=\"%s\" Id=\"%d\" Height=\"%g\"/>";
-	sprintf(xml, fmt, rob_name, rob_id, height);
+    sprintf(xml, fmt, rob_name, rob_id, height);
 
     if(port.send_info(xml, strlen(xml)+1)!=true)
     {
@@ -131,7 +131,7 @@ void CRobLink::parse_server_reply(void)
     port.SetRemote(port.GetLastSender());
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, char *host) : measures(0), port(6000,host,0)
+CRobLink::CRobLink(char *rob_name, int rob_id, char *host, int type) : measures(0), port(6000,host,0)
 {
     Status = 0;
 
@@ -142,7 +142,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, char *host) : measures(0), port(6
 		return;
     }
 
-    send_register_message(rob_name, rob_id);
+    send_register_message(rob_name, rob_id, type);
     if( Status != 0 ) return;
 
     parse_server_reply();
@@ -159,7 +159,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, char *host) : measures(0), port(6
     Status = 0;
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, double irSensorAngles[], char *host) :  measures(0), port(6000,host,0)
+CRobLink::CRobLink(char *rob_name, int rob_id, int type, double irSensorAngles[], char *host) :  measures(0), port(6000,host,0)
 {
     Status = 0;
 
@@ -170,7 +170,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, double irSensorAngles[], char *ho
 		return;
     }
 
-    send_register_message(rob_name,rob_id,irSensorAngles);
+    send_register_message(rob_name,rob_id,type, irSensorAngles);
     if( Status != 0 ) return;
 
     parse_server_reply();
@@ -187,7 +187,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, double irSensorAngles[], char *ho
     Status = 0;
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host) : measures(0), port(6000,host,0) 
+CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host) : measures(0), port(6000,host,0)
 {
     Status = 0;
 

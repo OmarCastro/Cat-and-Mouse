@@ -42,8 +42,8 @@ class CRobLink
     Q_OBJECT
 #endif
 public:
-    CRobLink(char *rob_name, int rob_id, char *host);
-    CRobLink(char *rob_name, int rob_id, double IRSensorAngle[], char *host);
+    CRobLink(char *rob_name, int rob_id, char *host, int type);
+    CRobLink(char *rob_name, int rob_id, int type, double IRSensorAngle[], char *host);
     CRobLink(char *rob_name, int rob_id, double height, char *host); // for RobotBeacon
     virtual ~CRobLink();
     //int ReadSensors();
@@ -109,6 +109,7 @@ public:
 	inline bool collisionRequestable() { return simParam.collisionRequestable; }
 	inline bool beaconRequestable() { return simParam.beaconRequestable; }
 
+
 	inline double posx() { return measures.x; }
 	inline double posy() { return measures.y; }
 	inline double posdir() { return measures.dir; }
@@ -121,9 +122,9 @@ public slots:
     int ReadSensors();
 
 protected:
-     void send_register_message(char *robot_name, int robId);
-     void send_register_message(char *robot_name, int robId, double IRSensorAngles[]);
-     void send_robotbeacon_register_message(char *rob_name,int rob_id, double height);
+     void send_register_message(char *robot_name, int robId, int type);
+     void send_register_message(char *robot_name, int robId, int type, double IRSensorAngles[]);
+     void send_robotbeacon_register_message(char *rob_name, int rob_id,double height);
      void parse_server_reply(void);
 
 private:
