@@ -23,8 +23,8 @@ makeGUISample:
 	make -C GUISample
 
 makeRobsample:
-	(cd robsample; qmake-qt4 -makefile) 
-	make -C robsample
+	(cd mouseSample; qmake-qt4 -makefile) 
+	make -C mouseSample
 
 clean:
 	make -C simulator clean
@@ -32,7 +32,7 @@ clean:
 	make -C logplayer clean
 	make -C libRobSock clean
 	make -C GUISample clean
-	make -C robsample clean
+	make -C mouseSample clean
 
 distclean:
 	make -C simulator distclean
@@ -40,5 +40,5 @@ distclean:
 	make -C logplayer distclean
 	make -C libRobSock distclean
 	make -C GUISample distclean
-	make -C robsample distclean
+	make -C mouseSample distclean
 
