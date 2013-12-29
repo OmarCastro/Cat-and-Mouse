@@ -22,4 +22,5 @@ unix {
 HEADERS += robfunc.h
 SOURCES += \
     mainRob.cpp \
-    robfunc.cpp
+    robfunc.cpp \
+    robfunc_Mouse.cpp

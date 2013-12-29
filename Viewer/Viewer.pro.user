@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.7.1, 2013-12-28T15:56:09. -->
+<!-- Written by QtCreator 2.7.1, 2013-12-28T19:30:56. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -65,7 +65,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">false</value>
-      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibraryAuto">true</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibraryAuto">false</value>
       <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
      </valuemap>
@@ -79,7 +79,7 @@
        <value type="QString">-r</value>
       </valuelist>
       <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
-      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">-r -w </value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
@@ -112,7 +112,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 4.7.4 for GCC (Qt SDK) Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QByteArray" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
-    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
     <value type="QString" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory">/home/miguel/cpss_Qt4/Viewer</value>
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">false</value>
    </valuemap>

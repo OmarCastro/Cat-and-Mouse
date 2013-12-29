@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>cbManageRobots</class>
  <widget class="QWidget" name="cbManageRobots">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -173,6 +176,23 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QRadioButton" name="radioButton_Cat">
+        <property name="text">
+         <string>Cat</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QRadioButton" name="radioButton_Mouse">
+        <property name="text">
+         <string>Mouse</string>
+        </property>
+       </widget>
+      </item>
       <item row="6" column="0" colspan="2">
        <widget class="QPushButton" name="pushButton_AddRobot">
         <property name="text">
@@ -183,33 +203,6 @@
           <normaloff>:/images/buttons/add</normaloff>:/images/buttons/add</iconset>
         </property>
        </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QRadioButton" name="radioButton_Cat">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Cat</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="radioButton_Mouse">
-          <property name="text">
-           <string>Mouse</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>

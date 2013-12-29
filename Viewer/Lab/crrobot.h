@@ -36,7 +36,8 @@ class CRRobot
 		/*! \enum States
 		 * \brief Gives the possible robot states
 		 */
-		enum 	  States {STOPPED, RUNNING, WAITINGOTHERS, REMOVED, FINISHED, RETURNING};
+        enum 	  States {STOPPED, RUNNING, WAITINGOTHERS, REMOVED, FINISHED, RETURNING};
+        enum 	  Types {CAT=0,MOUSE=1};
 
 		/*! This is the constructor.
 		 */

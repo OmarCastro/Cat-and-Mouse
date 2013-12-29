@@ -198,7 +198,7 @@ void CRQScene::drawLab( CRLab * l_b )
         labArrival2->setZValue( 2 );
         labArrival2->setVisible( true );
 
-        if(target == tg->begin()){
+        /*if(target == tg->begin()){
             targ1=labArrival;
             targ2=labArrival2;
             this->radius = radius;
@@ -207,7 +207,7 @@ void CRQScene::drawLab( CRLab * l_b )
             targ2->setRect(targ2->rect().translated(-target_x, -target_y));
 
             labArrival2->setBrush(Qt::gray);
-        }
+        }*/
     }
     /*QList<QGraphicsPixmapItem *> *labLight = new QList<QGraphicsPixmapItem *>();
     for ( beacon = bl->begin() ; beacon != bl->end(); ++beacon )
@@ -302,6 +302,7 @@ int CRQScene::drawRobot( CRLab * l_b )
             {
                 QGraphicsPixmapItem *robot = new QGraphicsPixmapItem(0, this);
 
+
                 if(rob->state() == CRRobot::RETURNING)
                     robot->setPixmap(*robPixmapReturn[rob->id() - 1]);
                 else
@@ -311,6 +312,19 @@ int CRQScene::drawRobot( CRLab * l_b )
 
                 double robWidth = static_cast<double>(robot->pixmap().width());
                 double robHeight = static_cast<double>(robot->pixmap().height());
+
+
+                if(rob->type() == CRRobot::MOUSE){
+                    QGraphicsEllipseItem *ellipse =
+                            new QGraphicsEllipseItem(-1.5*zoom,-1.5*zoom,4*zoom,4*zoom, 0, this);
+                    QPen pen(Qt::darkGreen);
+                    pen.setWidth(3);
+                    ellipse->setPen(pen);
+                    ellipse->setZValue( 1 );
+                    ellipse->setVisible( true );
+
+                    robMouseRadius[rob->id() - 1] =  ellipse;
+                }
 
                 robot->setTransformOriginPoint(robWidth / 2.0, robHeight / 2.0);
 
@@ -360,6 +374,11 @@ int CRQScene::drawRobot( CRLab * l_b )
                     robot->setRotation(-dir);
                 }
 
+                QGraphicsEllipseItem *radius = robMouseRadius[rob->id() - 1];
+                if(radius != 0){
+                radius->setPos(rob->x() * zoom - robot->pixmap().width() / 2.0,
+                               sizeInPixels - rob->y() * zoom - robot->pixmap().height() / 2.0);
+                }
                 robot->setPos (rob->x() * zoom - robot->pixmap().width() / 2.0,
                                sizeInPixels - rob->y() * zoom - robot->pixmap().height() / 2.0);
 
@@ -393,7 +412,7 @@ int CRQScene::drawRobot( CRLab * l_b )
      *******************************/
 
 
-    rob = lab->robot( 2 );
+   /* rob = lab->robot( 2 );
     if( rob !=NULL && (rob->id() > 0) && (rob->id() < (nRobots + 1) ) ){
 
         CRVertice pos = lab->targetListRef()->begin()->Position();
@@ -414,7 +433,7 @@ int CRQScene::drawRobot( CRLab * l_b )
         targ2->setPos(target_x,target_y);
 
 
-    }
+    }*/
 
     update();
     return 0;
@@ -504,6 +523,7 @@ void CRQScene::skin(QString skinFileName)
         robPixmapReturn.resize(5);
         robPixmapCollision.resize(5);
         startPixmap.resize(5);
+        robMouseRadius.resize(5);
 
         // robot files
         for(unsigned int r=0; r < 5; r++)

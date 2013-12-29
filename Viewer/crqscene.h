@@ -115,8 +115,7 @@ private:
     vector<QPixmap *> startPixmap;
     QGraphicsPixmapItem* mousePixmap;
 
-    QGraphicsEllipseItem* targ1;
-    QGraphicsEllipseItem* targ2;
+    vector<QGraphicsEllipseItem *> robMouseRadius;
     double radius;
 
     // Vector of starting points
