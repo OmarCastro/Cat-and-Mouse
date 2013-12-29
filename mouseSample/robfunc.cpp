@@ -11,7 +11,7 @@ void DetermineAction(int beaconToFollow, float *lPow, float *rPow, int *state)
     static float  left; //value of frontal left sonar sensor
     static float right; //value of frontal rigth sonar sensor
     static float center; //value of frontal center sonar sensor
-    static int    Ground;
+    //static int    Ground;
     static bool   Collision;// collision sensor
     static float Compass; //compass sensor
 
@@ -34,8 +34,8 @@ void DetermineAction(int beaconToFollow, float *lPow, float *rPow, int *state)
     }
     else beaconReady=0;
 
-    if(IsGroundReady())
-        Ground=    GetGroundSensor();
+    //if(IsGroundReady())
+    //    Ground=    GetGroundSensor();
     if(IsBumperReady())
         Collision= GetBumperSensor();
     if(IsCompassReady()){

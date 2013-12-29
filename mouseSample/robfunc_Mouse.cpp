@@ -1,6 +1,5 @@
 #include "robfunc.h"
 #include <math.h>
-bool waitingForSensor = false;
 
 /*
  * Negamax implementation
@@ -25,7 +24,7 @@ bool waitingForSensor = false;
  */
 
 double f(double x){
-    (x >= 5) ? 300 : (x < 2.5) ? -1200 : (x < 3) ? -1000 : (x < 4) ? -400 : -200;
+    return (x >= 5) ? 300 : (x < 2.5) ? -1200 : (x < 3) ? -1000 : (x < 4) ? -400 : -200;
 }
 
 double negamax(double posX, double posY, double catX, double catY){
@@ -51,7 +50,6 @@ void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *sta
     static float  left; //value of frontal left sonar sensor
     static float right; //value of frontal rigth sonar sensor
     static float center; //value of frontal center sonar sensor
-    static int    Ground;
     static bool   Collision;// collision sensor
     static float Compass; //compass sensor
 
@@ -74,8 +72,6 @@ void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *sta
     }
     else beaconReady=0;
 
-    if(IsGroundReady())
-        Ground=    GetGroundSensor();
     if(IsBumperReady())
         Collision= GetBumperSensor();
     if(IsCompassReady()){
