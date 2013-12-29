@@ -1,5 +1,5 @@
 #include "robfunc.h"
-#include <math.h>
+#include <stdio.h>
 
 /*
  * Negamax implementation
@@ -32,7 +32,7 @@ double negamax(double posX, double posY, double catX, double catY){
            relY = posY - catY;
     //d(x,y)
     double distance2 = relX*relX+relY*relY;
-    double distance = sqrt(distance);
+    double distance = sqrt(distance2);
     return sqrt(distance2*distance) + f(distance)/distance;
 
 }
@@ -40,10 +40,9 @@ double negamax(double posX, double posY, double catX, double catY){
 
 
 /* Calculate the power of left and right motors */
-void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *state)
+void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *state, externalRobot *robots)
 {
     static int counter=0;
-    static float CollisionOrientation = 0.0;
 
     bool   beaconReady;
     static struct beaconMeasure beacon; // beacon sensor
@@ -51,9 +50,9 @@ void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *sta
     static float right; //value of frontal rigth sonar sensor
     static float center; //value of frontal center sonar sensor
     static bool   Collision;// collision sensor
-    static float Compass; //compass sensor
-
-
+    static float Compass = 0; //compass sensor
+    static float X; // GPS x value
+    static float Y; //GPS yvalue
 
 
   // SENSORS ACCESS
@@ -76,6 +75,11 @@ void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *sta
         Collision= GetBumperSensor();
     if(IsCompassReady()){
         Compass= GetCompassSensor();
+        printf("orientation %f\n", Compass);
+    }
+    if(IsGPSReady()){
+        X= GetX();
+        Y= GetY();
     }
 
 
@@ -83,86 +87,94 @@ void DetermineMouseAction(int beaconToFollow, float *lPow, float *rPow, int *sta
 
 
 
-
-
-    if(beaconReady && beacon.beaconVisible && center < 3.0){
-            if(beacon.beaconDir > 20.0 && left < 4.0){
-                *lPow=0.0;
-                *rPow=0.1;
-                *state = RUNNING;
-            }
-            else if(beacon.beaconDir < -20.0 && right < 4.0){
-                *lPow=0.1;
-                *rPow=0.0;
-                *state = RUNNING;
-            }
-            else { /* Full Speed Ahead */
-               *lPow=0.1;
-               *rPow=0.1;
-            }
-
-
-    } else if(center>3.0 || right> 4.0 || left>4.0 || Collision) { /* Close Obstacle - Rotate */
+    if(center>3.0 || right> 4.0 || left>4.0 || Collision) { /* Close Obstacle - Rotate */
         if(right < left) {
               *lPow=0.06;
                *rPow=-0.06;
-            if(*state != BYPASSING_RIGTH){
-                CollisionOrientation = Compass;
-               *state = BYPASSING_RIGTH;
-            }
         }  else {
                *lPow=-0.06;
                *rPow=0.06;
-            if(*state != BYPASSING_LEFT){
-                CollisionOrientation = Compass;
-               *state = BYPASSING_LEFT;
-            }
         }
 
-    } else if(*state == BYPASSING_RIGTH && left>3.0){ // if its still bypassing an obstacle through the right side
-        if(left < 3.5 ){
-            *lPow=0.05;
-            *rPow=0.07;
-        } else if(left > 3.7 ){
-            *lPow=0.07;
-            *rPow=0.05;
-        } else {
-            *lPow=0.05;
-            *rPow=0.05;
-        }
-    } else if(*state == BYPASSING_LEFT && right>3.0){ // if its still bypassing an obstacle through the left side
-        if(right < 3.5 ){
-            *lPow=0.07;
-            *rPow=0.05;
-        } else if(right > 3.7 ){
-            *lPow=0.05;
-            *rPow=0.07;
-        } else {
-            *lPow=0.05;
-            *rPow=0.05;
-        }
+    } else if(left> 3.7){ // if its still bypassing an obstacle through the right side
+        *lPow=0.07;
+        *rPow=0.05;
+    } else if(right>3.7){ // if its still bypassing an obstacle through the left side
+        *lPow=0.05;
+        *rPow=0.07;
     } else {
-        if(*state != RUNNING){
-            //difference between orientation when approached an obstacle and current one
-            float diff = Compass - CollisionOrientation;
-            if(diff < 10 && diff > -10){
-                *state = RUNNING;
+
+
+
+        float orientations[8] = {Compass,Compass + 45,Compass + 90,Compass + 135,Compass + 180,
+                Compass - 135,Compass - 90,Compass - 45};
+
+        float distance = 2;
+
+        float score[8];
+
+        float maxScore;
+        int maxScoreIndex = 0;
+
+
+        for(int i=0;i<8;++i){
+            float x= X + distance * cos(M_PI * orientations[i] / 180);
+            float y= Y + distance * sin(M_PI * orientations[i] / 180);
+            float points = 0;
+            for(int j=0;j<5;++j){
+                if(robots[j].isCat){
+                    points += negamax(x,y,robots[j].x,robots[j].y);
+                }
+            }
+            score[i] = points;
+            if(i==0){
+               maxScore = points;
+            } else if(points > maxScore){
+                maxScore = points;
+                maxScoreIndex = i;
             }
         }
 
-        if(*state == BYPASSING_LEFT){
-            *lPow=0.07;
-            *rPow=0.01;
+        if(maxScoreIndex == 0){ //orientation front
+            //go front at full speed
+            *lPow=0.1;
+            *rPow=0.1;
+
+        }else if(maxScoreIndex == 1){ //orientation front left
+            *lPow=0.08;
+            *rPow=0.1;
+
+        }else if(maxScoreIndex == 2){ //orientation left
+            *lPow=0.03;
+            *rPow=0.1;
+
+        }else if(maxScoreIndex == 3){ //orientation back left
+            *lPow=-0.02;
+            *rPow=0.1;
+
+        }else if(maxScoreIndex == 4){ //orientation back
+            if(score[3] > score[5]){
+                *lPow=-0.1;
+                *rPow=0.1;
+            } else {
+                *lPow=0.1;
+                *rPow=-0.1;
+            }
+        }else if(maxScoreIndex == 5){ //orientation back right
+            *rPow=-0.02;
+            *lPow=0.1;
+
+        }else if(maxScoreIndex == 6){ //orientation right
+            *rPow=0.03;
+            *lPow=0.1;
+
+        }else if(maxScoreIndex == 7){ //orientation front right
+            *rPow=0.08;
+            *lPow=0.1;
 
         }
-        else if(*state == BYPASSING_RIGTH){
-            *lPow=0.01;
-            *rPow=0.07;
-        }
-        else { /* Full Speed Ahead */
-           *lPow=0.1;
-           *rPow=0.1;
-        }
+
+
     }
 
 

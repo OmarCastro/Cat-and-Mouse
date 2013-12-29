@@ -8,7 +8,6 @@
  * please see http://microrato.ua.pt/ or contact us.
  */
 
-#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,29 +15,14 @@
 #include "robfunc.h"
 
 
-struct externalRobot{
-public:
-    bool isCat;
-    double x,y;
-    externalRobot():isCat(false),x(0),y(0){}
-};
 
-struct relativePosition{
-public:
-    double x,y,distance;
-    void update(const externalRobot& robot){
-        x = GetX() - robot.x;
-        y = GetY() - robot.y;
-        distance = sqrt(x*x+y*y);
-    }
-};
 
 int main(int argc, char *argv[])
 {
     char host[100]="localhost";
     char rob_name[20]="robsample";
     char typeStr[10]="cat";
-    externalRobot robots[6];
+    externalRobot robots[5];
 
     float lPow,rPow;
     int state=STOP, stoppedState=RUN, rob_id = 1;
@@ -188,7 +172,7 @@ int main(int argc, char *argv[])
 
             }
 
-                    DetermineAction(0,&lPow,&rPow,&actionState);
+                    DetermineMouseAction(0,&lPow,&rPow,&actionState,robots);
                     DriveMotors(lPow,rPow);
 
 

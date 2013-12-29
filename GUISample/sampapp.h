@@ -34,11 +34,12 @@ class SampApp : public QApplication
 {
     Q_OBJECT
 public:
-    SampApp(int &argc, char*argv[], char *robot_name);
+    SampApp(int &argc, char*argv[], char *robot_name, int robot_type);
 public slots:
     void act(void);
 private:
     char rob_name[20];
+    int rob_type;
 
     int beaconToFollow; //used to support a simple sequential visiting strategy
 };

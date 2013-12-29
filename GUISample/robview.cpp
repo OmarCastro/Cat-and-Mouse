@@ -42,6 +42,9 @@ using std::cerr;
 #endif
 
 
+
+
+
 SensorObstItem::SensorObstItem(QGraphicsScene *scene, 
                                double posx, double posy, double dir, double un)
                                : QGraphicsEllipseItem(posx,posy,0, 0, 0, scene)
