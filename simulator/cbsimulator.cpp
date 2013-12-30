@@ -479,7 +479,7 @@ bool cbSimulator::registerRobot(cbRobot *robot)
 
 	bool isRobotBeacon = ( (dynamic_cast<cbRobotBeacon *> (robot)) != 0);
 
-	if(isRobotBeacon && lab->nBeacons()!=0)
+    if(isRobotBeacon && lab->nBeacons() > 4)
 	{
 		cerr << "beacon already exists";
 		return false;
@@ -519,7 +519,6 @@ bool cbSimulator::registerRobot(cbRobot *robot)
     if(isRobotBeacon){
         lab->addBeacon(dynamic_cast<cbRobotBeacon *> (robot));
         param->nBeacons= Lab()->nBeacons();
-        //printf("new beacon!!\n");
     }
 
     emit robotRegistered((int) id);
@@ -791,16 +790,8 @@ void cbSimulator::NextPositions()
 #endif
 	}
 
-    cbBeacon *beacon = Lab()->Beacon(0);
-//    cbPoint movepoint(-0.01,0);
-//    cbPoint& point =  beacon->Center();
-//    cbPoint newcenter = point+movepoint;
-    int j;
-    for(j=0;robots[j]->Type()==0;j++);
-    cbRobot *robot = robots[j];
-    //beacon->setCenter(robot->Center());
-
-    printf("beacon: %f %f\n",beacon->Center().X(),beacon->Center().Y());
+    //cbBeacon *beacon = Lab()->Beacon(0);
+    //printf("beacon: %f %f\n",beacon->Center().X(),beacon->Center().Y());
 }
 
 /*!

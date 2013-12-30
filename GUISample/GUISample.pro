@@ -20,5 +20,7 @@ unix {
     LIBS += -L$$PWD/../libRobSock/ -lRobSock
 }
 
-HEADERS		= robview.h sampapp.h #keyhandler.h
-SOURCES		= main.cpp robview.cpp
+HEADERS		= robview.h sampapp.h \ #keyhandler.h
+    tactics.h
+SOURCES		= main.cpp robview.cpp \
+    tactics.cpp
