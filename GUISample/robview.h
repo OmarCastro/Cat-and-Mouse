@@ -45,12 +45,12 @@ private:
 class RobScene: public QGraphicsScene
 {
 public:
-    RobScene(double irSensorAngles[3]);
+    RobScene(double irSensorAngles[4]);
     void redrawRobot(void);
 private:
     QGraphicsLineItem *compassLine;
     vector<QGraphicsLineItem *> beaconLine;
-    SensorObstItem *sensorObst[3];
+    SensorObstItem *sensorObst[4];
 
     double unit, scene_sizex, scene_sizey, rob_radius, rob_x, rob_y;
 };
@@ -59,7 +59,7 @@ class RobView: public QGraphicsView
 {
   Q_OBJECT
 public:
-    RobView(double irSensorAngles[3], char *rob_name);
+    RobView(double irSensorAngles[4], char *rob_name);
 public slots:
     void redrawRobot(void);
 private:

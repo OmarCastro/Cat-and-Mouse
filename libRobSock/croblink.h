@@ -44,7 +44,7 @@ class CRobLink
 public:
     CRobLink(char *rob_name, int rob_id, char *host, int type);
     CRobLink(char *rob_name, int rob_id, int type, double IRSensorAngle[], char *host);
-    CRobLink(char *rob_name, int rob_id, double height, char *host); // for RobotBeacon
+    CRobLink(char *rob_name, int rob_id, double height, char *host, int type); // for RobotBeacon
     virtual ~CRobLink();
     //int ReadSensors();
     void DriveMotors(double lPow,double rPow);
@@ -124,7 +124,7 @@ public slots:
 protected:
      void send_register_message(char *robot_name, int robId, int type);
      void send_register_message(char *robot_name, int robId, int type, double IRSensorAngles[]);
-     void send_robotbeacon_register_message(char *rob_name, int rob_id,double height);
+     void send_robotbeacon_register_message(char *rob_name, int rob_id, double height, int type);
      void parse_server_reply(void);
 
 private:

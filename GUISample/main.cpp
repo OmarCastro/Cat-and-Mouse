@@ -329,7 +329,7 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
 
         float score[8];
 
-        float maxScore;
+        float maxScore = 0;
         int maxScoreIndex = 0;
 
 
@@ -352,7 +352,7 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
                 maxScoreIndex = i;
             }
         }
-        printf("maxScore: %d\n", maxScore);
+        //printf("maxScore: %f\n", maxScore);
         if(maxScoreIndex == 0){ //orientation front
             //go front at full speed
             *lPow=0.1;
@@ -521,16 +521,15 @@ void SampApp::act(void)
    if(GetTime() % 2 == 0) {
          RequestObstacleSensor(CENTER);
 
-         //RequestCompassSensor();
+         RequestCompassSensor();
 
-         if(GetTime() % 4 == 0 || beaconToFollow == GetNumberOfBeacons())
-             RequestGroundSensor();
-         else
+         if(GetTime() % 4 != 0 && rob_type == 0 && beaconToFollow < GetNumberOfBeacons()){
              RequestBeaconSensor(beaconToFollow);
+         }
 
       }
       else {
-       RequestSensors(4, "IRSensor1", "IRSensor2", "Compass", "GPS");
+       RequestSensors(3, "IRSensor1", "IRSensor2", "GPS");
       }
 }
 
@@ -539,7 +538,7 @@ int main( int argc, char** argv )
 {
     char host[100]="localhost";
     char rob_name[20]="GUISample";
-    int type;
+    int type = 0;
 
     printf(" GUISample Robot \n Copyright 2002-2011 Universidade de Aveiro\n");
     fflush(stdout);
@@ -589,19 +588,30 @@ int main( int argc, char** argv )
     qApp->addLibraryPath("../libRobSock");
 
     /* Connect Robot to simulator */
-    double irSensorAngles[4] = { 0.0, 60.0, -60.0, 180.0};
-    if(InitRobot2(rob_name,rob_id,irSensorAngles,host,type)==-1) {
-          printf("%s Failed to connect\n",rob_name);
-          exit(1);
+    double irSensorAngles[5] = { 0.0, 60.0, -60.0, 180.0, 0};
+
+    if(type == 0){
+        if(InitRobot2(rob_name,rob_id,irSensorAngles,host,type)==-1) {
+              printf("%s Failed to connect\n",rob_name);
+              exit(1);
+        }
+    } else {
+        if(InitRobotBeacon(rob_name,rob_id,4.0,host,type)==-1){
+            printf("%s Failed to connect\n",rob_name);
+            exit(1);
+        }
     }
+
     printf("%s Connected\n",rob_name);
     fflush(stdout);
+
+    RobView robView(irSensorAngles, rob_name);
+
 
     // Connect event NewMessage to handler act()
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &app, SLOT(act()));
     
     // create robot display widget
-    RobView robView(irSensorAngles, rob_name);
 
     // Connect event NewMessage to handler redrawRobot()
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &robView, SLOT(redrawRobot()));

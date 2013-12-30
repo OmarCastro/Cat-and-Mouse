@@ -77,12 +77,12 @@ void CRobLink::send_register_message(char *rob_name,int rob_id, int type, double
 /*!
  * Composes register message and sends it to server.
  */
-void CRobLink::send_robotbeacon_register_message(char *rob_name, int rob_id, double height)
+void CRobLink::send_robotbeacon_register_message(char *rob_name, int rob_id, double height, int type)
 {
     // register in server
 	char xml[MSGMAXSIZE];
-    const char fmt[] = "<RobotBeacon Name=\"%s\" Id=\"%d\" Height=\"%g\"/>";
-    sprintf(xml, fmt, rob_name, rob_id, height);
+    const char fmt[] = "<RobotBeacon Name=\"%s\" Id=\"%d\" Type=\"%d\" Height=\"%g\"/>";
+    sprintf(xml, fmt, rob_name, rob_id, type, height);
 
     if(port.send_info(xml, strlen(xml)+1)!=true)
     {
@@ -187,7 +187,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, int type, double irSensorAngles[]
     Status = 0;
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host) : measures(0), port(6000,host,0)
+CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host, int type) : measures(0), port(6000,host,0)
 {
     Status = 0;
 
@@ -198,7 +198,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host) : meas
 		return;
     }
 
-    send_robotbeacon_register_message(rob_name, rob_id, height);
+    send_robotbeacon_register_message(rob_name, rob_id, height, type);
     if( Status != 0 ) return;
 
     parse_server_reply();

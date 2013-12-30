@@ -41,7 +41,6 @@ class cbRobotBeacon : public cbRobot, public cbBeacon
 public:
 	cbRobotBeacon(const double irSensorAngles[NUM_IR_SENSORS]);
 	virtual ~cbRobotBeacon();
-
         cbPoint &Center();
 
 	void Log(ostream &Log, bool withactions=true);

@@ -39,8 +39,6 @@ cbRobotBeacon::~cbRobotBeacon()
 }
 
 
-//	void cbBeacon::setCenter(cbPoint&);
-
 cbPoint &cbRobotBeacon::Center()
 {
 	return cbRobot::Center();

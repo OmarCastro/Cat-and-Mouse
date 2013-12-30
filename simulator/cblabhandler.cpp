@@ -84,15 +84,16 @@ bool cbLabHandler::startElement( const QString&, const QString&, const QString& 
 	}
 	else if (tag == "Beacon" && lab!=0)
 	{
-		beacon = new cbBeacon;
+        beacon = new cbBeacon;
 		point = cbPoint();
-		/* process attributes */
+        /* process attributes */
+
 		const QString &x = attr.value(QString("X"));
 		if (!x.isNull()) point.setX(x.toDouble());
 		const QString &y = attr.value(QString("Y"));
 		if (!y.isNull()) point.setY(y.toDouble());
 		const QString &height = attr.value(QString("Height"));
-		if (!height.isNull()) beacon->setHeight(height.toDouble());
+        if (!height.isNull()) beacon->setHeight(height.toDouble());/**/
 	}
 	else if (tag == "Target" && lab!=0)
 	{
@@ -133,8 +134,8 @@ bool cbLabHandler::endElement( const QString&, const QString&, const QString& qN
 	}
 	else if (tag == "Beacon")
 	{
-		beacon->setCenter(point);
-		lab->addBeacon(beacon);
+        beacon->setCenter(point);
+        lab->addBeacon(beacon);
 	}
 	else if (tag == "Target")
 	{

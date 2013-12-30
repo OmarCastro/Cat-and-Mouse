@@ -55,10 +55,10 @@ int InitRobot2(char *rob_name, int rob_id, double IRSensorAngles[NUM_IR_SENSORS]
     return robLink->status();
 }
 
-int InitRobotBeacon(char *rob_name, int rob_id, double height, char *host)
+int InitRobotBeacon(char *rob_name, int rob_id, double height, char *host, int type)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, height, host);
+    robLink=new CRobLink(rob_name, rob_id, height, host, type);
     return robLink->status();
 }
 

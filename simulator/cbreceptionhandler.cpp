@@ -71,7 +71,7 @@ bool cbReceptionHandler::startElement( const QString&, const QString&, const QSt
 	{
 		type = ROBOT;
 
-		robot = new cbRobot(irSensorDefaultAngles);
+        robot = new cbRobot(irSensorDefaultAngles);
 
 		/* process attributes */
         const QString &name = attr.value(QString("Name"));
@@ -92,6 +92,8 @@ bool cbReceptionHandler::startElement( const QString&, const QString&, const QSt
         if (!name.isNull()) robotBeacon->setName(name.toLatin1().constData());
 		const QString &id = attr.value(QString("Id"));
 		if (!id.isNull()) robotBeacon->setId(id.toUInt());
+        const QString &type = attr.value(QString("Type"));
+        if (!id.isNull()) robotBeacon->setType(type.toUInt());
 		const QString &height = attr.value(QString("Height"));
 		if (!height.isNull()) robotBeacon->setHeight(height.toDouble());
 	}

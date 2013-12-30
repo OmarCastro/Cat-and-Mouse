@@ -100,7 +100,6 @@ RobScene::RobScene(double irSensorAngles[NUM_IR_SENSORS])
                          rob_x + rob_radius, rob_y + rob_radius);
     compassLine->setZValue(10);
     compassLine->setVisible(true);
-
     for(int b=0; b<GetNumberOfBeacons();b++) {
         beaconLine.push_back(new QGraphicsLineItem(0, this));
         beaconLine[b]->setLine(rob_x + rob_radius, rob_y + rob_radius,

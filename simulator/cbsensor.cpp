@@ -244,7 +244,7 @@ void cbBeaconSensor::update()
 	}
 	else {
              double distRobotToBeacon = robot->Center().distance(b->Center());
-             if( distRobotToBeacon > 5.0 ) {   // BEACON_DISTANCE_LIMIT
+             if( distRobotToBeacon > 7.0 ) {   // BEACON_DISTANCE_LIMIT
 	         resetBeaconVisible();
              }
              else {

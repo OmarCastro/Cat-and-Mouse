@@ -36,10 +36,10 @@ public:
 	cbBeacon();
 	~cbBeacon();
 
-	void setCenter(cbPoint&);
+    void setCenter(cbPoint&);
 	void setHeight(double);
 
-	cbPoint &Center();
+    virtual cbPoint &Center();
 	double Height();
 
 protected:

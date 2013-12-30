@@ -65,7 +65,7 @@ using std::ofstream;
 */
 static const char *LAB =
 	"<Lab Name=\"Default LAB\" Height=\"14\" Width=\"28\">\n"
-		"\t<Beacon X=\"24\" Y=\"7.0\" Height=\"4.0\"/>\n"
+
 		"\t<Target X=\"24\" Y=\"7.0\" Radius=\"2.0\"/>\n"
 		"\t<Target X=\"7\" Y=\"7.0\" Radius=\"2.0\"/>\n"
 		"\t<Wall Height=\"5.0\">\n"
@@ -516,8 +516,11 @@ bool cbSimulator::registerRobot(cbRobot *robot)
     const cbPosition &pos = grid->at(id-1);
 	robot->setPosition(pos);
 
-    if(isRobotBeacon)
+    if(isRobotBeacon){
         lab->addBeacon(dynamic_cast<cbRobotBeacon *> (robot));
+        param->nBeacons= Lab()->nBeacons();
+        //printf("new beacon!!\n");
+    }
 
     emit robotRegistered((int) id);
 	return true;
@@ -789,13 +792,15 @@ void cbSimulator::NextPositions()
 	}
 
     cbBeacon *beacon = Lab()->Beacon(0);
-    cbTarget *target = Lab()->Target(0);
 //    cbPoint movepoint(-0.01,0);
 //    cbPoint& point =  beacon->Center();
 //    cbPoint newcenter = point+movepoint;
-    cbRobot *robot = robots[1];
-    beacon->setCenter(robot->Center());
-    target->setCenter(robot->Center());
+    int j;
+    for(j=0;robots[j]->Type()==0;j++);
+    cbRobot *robot = robots[j];
+    //beacon->setCenter(robot->Center());
+
+    printf("beacon: %f %f\n",beacon->Center().X(),beacon->Center().Y());
 }
 
 /*!

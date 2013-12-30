@@ -78,7 +78,7 @@ extern int           InitRobot2(char *name,int id, double IRSensorAngles[4], cha
  *          host - Host where simulator is running 
  *  Returns -1 in case of error
  */
-extern int           InitRobotBeacon(char *name, int id, double height, char *host);
+extern int           InitRobotBeacon(char *name, int id, double height, char *host, int type);
 
 
 /**************************************************************************/
