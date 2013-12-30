@@ -118,8 +118,8 @@ void SampApp::act(void)
                      int id_mouse, id_cat;
                      sscanf(msg+2, "%d %d",&id_mouse,&id_cat);
                      beaconToFollow++;
-                     if(rob_id == id_cat || beaconToFollow >= GetNumberOfBeacons()){
-                         printf("bcns: %d %d\n", beaconToFollow, GetNumberOfBeacons() );
+                     printf("bcns: %d %d\n", beaconToFollow, GetNumberOfBeacons() );
+                     if(beaconToFollow >= GetNumberOfBeacons()){
                          Finish();
                      }
                  }
@@ -148,7 +148,7 @@ void SampApp::act(void)
                      char msg[10];
                      sprintf(msg, "m %d %d",rob_id,id);
                      Say(msg);
-                     printf("mouse %d is dead", rob_id);
+                     printf("mouse %d is dead\n", rob_id);
                      Finish();
                  }
              }
@@ -186,13 +186,21 @@ int main( int argc, char** argv )
     char host[100]="localhost";
     char rob_name[20]="GUISample";
     int type = 0;
+    bool withGUI = true;
 
     printf(" GUISample Robot \n Copyright 2002-2011 Universidade de Aveiro\n");
     fflush(stdout);
 
     /* processing arguments */
-    while (argc > 2) // every option has a value, thus argc must be 1, 3, 5, ...
+    while (argc > 1) // every option has a value, thus argc must be 1, 3, 5, ...
     {
+        if (strcmp(argv[1], "-nogui") == 0){ // except this
+            withGUI = false;
+            argc--;
+            argv++;
+            continue;
+        }
+
         if (strcmp(argv[1], "-host") == 0)
         {
            strncpy(host, argv[2], 99);
@@ -252,19 +260,22 @@ int main( int argc, char** argv )
     printf("%s Connected\n",rob_name);
     fflush(stdout);
 
-    RobView robView(irSensorAngles, rob_name);
 
 
     // Connect event NewMessage to handler act()
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &app, SLOT(act()));
     
     // create robot display widget
+    if(withGUI){
+
+    RobView robView(irSensorAngles, rob_name);
+
 
     // Connect event NewMessage to handler redrawRobot()
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &robView, SLOT(redrawRobot()));
     
     robView.show();
-
+}
     // process events
     return app.exec();
 }

@@ -247,10 +247,25 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
         }
 
     } else {
-        //give a penalty on score if theres an obstacle on the left side
-        multiplier[side_frontleft] = multiplier[side_left] = multiplier[side_backleft] = 1/left;
-        //give a penalty on score if theres an obstacle on the right side
-        multiplier[side_frontright] = multiplier[side_right] = multiplier[side_backright] = 1/right;
+        if(left > 1.0){
+            //give a penalty on score if theres an obstacle on the left side
+            multiplier[side_frontleft] = multiplier[side_left] = multiplier[side_backleft] = 1/left;
+        }
+        if(right > 1.0){
+            //give a penalty on score if theres an obstacle on the right side
+            multiplier[side_frontright] = multiplier[side_right] = multiplier[side_backright] = 1/right;
+        }
+        if(center > 1.0){
+            //give a penalty on score if theres an obstacle on the front
+            multiplier[side_frontright] = multiplier[side_frontleft] = multiplier[side_front] = 1.25/right;
+        }
+
+        //always favor going to front to avoid slowing down
+        multiplier[side_frontright] *= 1.25;
+        multiplier[side_frontleft] *= 1.25;
+        multiplier[side_front] *= 1.25;
+
+
 
 
 
