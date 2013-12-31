@@ -38,12 +38,13 @@ using std::cerr;
 #include "sampapp.h"
 #include "robview.h"
 #include "tactics.h"
+#include "mapping.h"
 
 int actionState = RUNNING;
 
 externalRobot robots[5];
 
-
+RobotMap *robot_map;
 /** SampApp methods **/
 
 SampApp::SampApp(int &argc, char*argv[], char *robot_name, int robot_type) : QApplication(argc,argv)
@@ -52,12 +53,19 @@ SampApp::SampApp(int &argc, char*argv[], char *robot_name, int robot_type) : QAp
     rob_name[19]='\0';
     rob_type = robot_type;
     beaconToFollow = 0; // start by finding target at beacon 0
+    if(rob_type == 1){
+        robot_map = new RobotMap();
+    }
 }
 
+SampApp::~SampApp(){
+    delete robot_map;
+}
 
 void SampApp::act(void)
 {
      static int state=STOP,stoppedState=RUN;
+     static int HP = 500; //health points
      double lPow, rPow;
 
      /* Reading next values from Sensors */
@@ -88,7 +96,7 @@ void SampApp::act(void)
      switch (state) {
               case RUN:    /* Go */
        if( GetVisitingLed() ) state = WAIT;
-               DetermineAction(0,&lPow,&rPow,&actionState);
+               DetermineAction(beaconToFollow,&lPow,&rPow,&actionState);
                DriveMotors(lPow,rPow);
                break;
       case WAIT: /* Wait for others to visit target */
@@ -118,14 +126,13 @@ void SampApp::act(void)
                      int id_mouse, id_cat;
                      sscanf(msg+2, "%d %d",&id_mouse,&id_cat);
                      beaconToFollow++;
-                     printf("bcns: %d %d\n", beaconToFollow, GetNumberOfBeacons() );
                      if(beaconToFollow >= GetNumberOfBeacons()){
                          Finish();
                      }
                  }
              }
          }
-     } else {
+     } else if(state == RUN){
          for(int i=0;i<5;i++){
              int id = i+1;
              if(rob_id == id) continue;
@@ -144,18 +151,25 @@ void SampApp::act(void)
                  //printf("cat %d at relative position %f %f, distance: %f\n",id, pos.x ,pos.y,pos.distance);
 
 
-                 if(pos.distance < 0.5){
-                     char msg[10];
-                     sprintf(msg, "m %d %d",rob_id,id);
-                     Say(msg);
-                     printf("mouse %d is dead\n", rob_id);
-                     Finish();
+                 if(pos.distance < 1.5){
+                     HP -= 100;
+                     if(HP < 0){
+                         char msg[10];
+                         sprintf(msg, "m %d %d",rob_id,id);
+                         Say(msg);
+                         printf("mouse %d is dead\n", rob_id);
+                         Finish();
+                     }
                  }
+
+                 HP += 10;
+                 if(HP > 500) HP = 500;
+
              }
 
          }
 
-                 DetermineMouseAction(0,&lPow,&rPow,&actionState,robots);
+         DetermineMouseAction(&lPow,&rPow,&actionState,robot_map,robots);
                  DriveMotors(lPow,rPow);
 
 
@@ -163,6 +177,7 @@ void SampApp::act(void)
 
 
      }
+
 
   //Request Sensors for next cycle
    if(GetTime() % 2 == 0) {
@@ -198,7 +213,9 @@ int main( int argc, char** argv )
             withGUI = false;
             argc--;
             argv++;
-            continue;
+            if(argc < 2){
+                break;
+            }
         }
 
         if (strcmp(argv[1], "-host") == 0)
@@ -266,16 +283,31 @@ int main( int argc, char** argv )
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &app, SLOT(act()));
     
     // create robot display widget
+    if(withGUI && type == 1 ){
+        Mapping mapping(robot_map,rob_name);
+        // Connect event NewMessage to handler redrawMap()
+        QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &mapping, SLOT(redrawMap()));
+        RobView robView(irSensorAngles, rob_name);
+        // Connect event NewMessage to handler redrawMap()
+        QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &robView, SLOT(redrawRobot()));
+
+
+        robView.show();
+        mapping.show();
+        return app.exec();
+    }
+
     if(withGUI){
-
     RobView robView(irSensorAngles, rob_name);
-
-
-    // Connect event NewMessage to handler redrawRobot()
+    // Connect event NewMessage to handler redrawMap()
     QObject::connect((QObject *)(Link()), SIGNAL(NewMessage()), &robView, SLOT(redrawRobot()));
-    
+
+
     robView.show();
-}
+    return app.exec();
+    }
     // process events
     return app.exec();
+
+
 }

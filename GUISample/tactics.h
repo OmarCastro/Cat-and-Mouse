@@ -23,10 +23,48 @@ const int RUNNING = 3; // isnt bypassing obstacles, runs forward looking at the 
 
 
 struct externalRobot{
-public:
     bool isCat;
     double x,y;
     externalRobot():isCat(false),x(0),y(0){}
+};
+
+class RobotMap{
+public:
+    static const int mapsize = 51;
+    static const double defval = 0.5;
+
+
+    void setOffset(double x, double y){
+        offsetX=x;
+        offsetY=y;
+    }
+    RobotMap();
+
+    void setValueGPS(int GPSx,int GPSy,double value){
+        int valx = GPSx-offsetX+25;
+        valx = (valx < 0) ? 0 : (valx > 50) ? 50 : valx;
+        int valy = GPSy-offsetY+25;
+        valy = (valy < 0) ? 0 : (valy > 50) ? 50 : valy;
+        values[valy][valx] = value;
+    }
+
+
+    double getValueGPS(int GPSx,int GPSy){
+        int valx = GPSx-offsetX+25;
+        valx = (valx < 0) ? 0 : (valx > 50) ? 50 : valx;
+        int valy = GPSy-offsetY+25;
+        valy = (valy < 0) ? 0 : (valy > 50) ? 50 : valy;
+        return values[valy][valx];
+    }
+
+    double getValue(int x,int y){
+        return values[y][x];
+    }
+
+private:
+    double values[mapsize][mapsize];
+    int offsetX; //GPS offset
+    int offsetY;
 };
 
 struct relativePosition{
@@ -42,7 +80,7 @@ extern int rob_id;
 
 /* Calculate the power of left and right motors */
 void DetermineAction(int beaconToFollow, double *lPow, double *rPow, int *state);
-void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *state, externalRobot *robots);
+void DetermineMouseAction(double *lPow, double *rPow, int *state, RobotMap* map,externalRobot *robots);
 
 
 

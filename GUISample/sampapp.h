@@ -35,6 +35,7 @@ class SampApp : public QApplication
     Q_OBJECT
 public:
     SampApp(int &argc, char*argv[], char *robot_name, int robot_type);
+    ~SampApp();
 public slots:
     void act(void);
 private:

@@ -21,6 +21,8 @@ unix {
 }
 
 HEADERS		= robview.h sampapp.h \ #keyhandler.h
-    tactics.h
+    tactics.h \
+    mapping.h
 SOURCES		= main.cpp robview.cpp \
-    tactics.cpp
+    tactics.cpp \
+    mapping.cpp

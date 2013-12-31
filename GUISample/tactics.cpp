@@ -5,6 +5,13 @@
 int rob_id=1;
 
 
+RobotMap::RobotMap(){
+    for(int i=0;i < mapsize;i++)
+        for(int j=0;j < mapsize;j++)
+            values[i][j]=defval;
+
+}
+
 const int side_front = 0;
 const int side_frontleft = 1;
 const int side_left = 2;
@@ -189,20 +196,18 @@ double negamax(double posX, double posY, double catX, double catY){
 
 
 /* Calculate the power of left and right motors */
-void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *state, externalRobot *robots)
+void DetermineMouseAction(double *lPow, double *rPow, int *state, RobotMap *map,externalRobot *robots)
 {
     static int counter=0;
 
 
-    bool   beaconReady;
-    static struct beaconMeasure beacon; // beacon sensor
     static float  left; //value of frontal left sonar sensor
     static float right; //value of frontal rigth sonar sensor
     static float center; //value of frontal center sonar sensor
     static bool   Collision;// collision sensor
     static float Compass = 0; //compass sensor
-    static float X; // GPS x value
-    static float Y; //GPS yvalue
+    static float X = -1; // GPS x value
+    static float Y = -1; //GPS yvalue
 
 
   // SENSORS ACCESS
@@ -215,12 +220,6 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
     if(IsObstacleReady(CENTER))
         center=   GetObstacleSensor(CENTER);
 
-    beaconReady = IsBeaconReady(beaconToFollow);
-    if(beaconReady) {
-       beacon =  GetBeaconSensor(beaconToFollow);
-    }
-    else beaconReady=0;
-
     if(IsBumperReady())
         Collision= GetBumperSensor();
     if(IsCompassReady()){
@@ -228,6 +227,9 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
         //printf("orientation %f\n", Compass);
     }
     if(IsGPSReady()){
+        if(X < 0 || Y < 0){
+            map->setOffset(GetX(),GetY());
+        }
         X= GetX();
         Y= GetY();
     }
@@ -283,12 +285,52 @@ void DetermineMouseAction(int beaconToFollow, double *lPow, double *rPow, int *s
         for(int i=0;i<8;++i){
             float x= X + distance * cos(M_PI * orientations[i] / 180);
             float y= Y + distance * sin(M_PI * orientations[i] / 180);
+
+            if(i == side_front){
+                double val = map->getValueGPS(x,y);
+                if(center < 2.0){
+                    val += 0.2;
+                    map->setValueGPS(x,y,(val > 1.0)?1.0:val);
+                } else {
+                    val -= 0.2;
+                    map->setValueGPS(x,y,(val < 0.0)?0.0:val);
+                }
+            } else if(i == side_frontleft){
+                double val = map->getValueGPS(x,y);
+                if(left < 2.0){
+                    val += 0.2;
+                    map->setValueGPS(x,y,(val > 1.0)?1.0:val);
+                } else {
+                    val -= 0.2;
+                    map->setValueGPS(x,y,(val < 0.0)?0.0:val);
+                }
+            }else if(i == side_frontright){
+                double val = map->getValueGPS(x,y);
+                if(right < 2.0){
+                    val += 0.2;
+                    map->setValueGPS(x,y,(val > 1.0)?1.0:val);
+                } else {
+                    val -= 0.2;
+                    map->setValueGPS(x,y,(val < 0.0)?0.0:val);
+                }
+            }
+
             float points = 0;
             for(int j=0;j<5;++j){
                 if(robots[j].isCat){
                     points += negamax(x,y,robots[j].x,robots[j].y);
                 }
             }
+
+            //avoid aproaching obstacles
+            for(int wi=-4;wi<=4;++wi){
+                for(int wj=-4;wj<=4;++wj){
+                    if(map->getValueGPS(x+wi,y+wj) < 0.4){ //avoid wall
+                        multiplier[i] -= 0.1;
+                    }
+                }
+            }
+
             points *= multiplier[i];
             score[i] = points;
             if(i==0){
