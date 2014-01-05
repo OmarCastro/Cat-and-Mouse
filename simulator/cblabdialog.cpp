@@ -90,7 +90,7 @@ void cbLabDialog::drawLab (cbLab *lab, QGraphicsScene *scene)
     for (i = 1; i < lab->nWalls(); i++)
     {
         cbWall *wall = lab->Wall(i);
-        if (wall->Height() > lab->Beacon(0)->Height())
+        if (lab->nBeacons() > 0 && wall->Height() > lab->Beacon(0)->Height())
            color = Qt::green;
         else
            color = Qt::blue;

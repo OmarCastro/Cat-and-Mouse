@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
 cbParameters::cbParameters()
 {
@@ -83,7 +84,7 @@ cbParameters::~cbParameters()
 
 int cbParameters::toXml(char *buff, int len)
 {
-	int cnt = sprintf(buff, "<Parameters SimTime=\"%u\" CycleTime=\"%u\"\n"
+    int cnt = sprintf(buff, "<Parameters SimTime=\"%u\" CycleTime=\"%u\"\n"
 			"\t\tCompassNoise=\"%g\" BeaconNoise=\"%g\" ObstacleNoise=\"%g\"\n"
 			"\t\tMotorsNoise=\"%g\" KeyTime=\"%u\"\n"
 			"\t\tGPS=\"%s\" GPSLinNoise=\"%g\" GPSDirNoise=\"%g\" \n"

@@ -1,7 +1,7 @@
 QMAKE = qmake-qt4
 
 
-all: makeSimulator makeViewer makeLogplayer makeLibRobSock makeGUISample makeRobsample
+all: makeSimulator makeViewer makeLogplayer makeLibRobSock makeAI_code
 
 makeSimulator:
 	(cd simulator; $(QMAKE) -makefile) 
@@ -19,27 +19,22 @@ makeLibRobSock:
 	(cd libRobSock; $(QMAKE) -makefile) 
 	make -C libRobSock
 
-makeGUISample:
-	(cd GUISample; $(QMAKE) -makefile) 
-	make -C GUISample
+makeAI_code:
+	(cd AI_code; $(QMAKE) -makefile) 
+	make -C AI_code
 
-makeRobsample:
-	(cd mouseSample; $(QMAKE) -makefile) 
-	make -C mouseSample
 
 clean:
 	make -C simulator clean
 	make -C Viewer clean
 	make -C logplayer clean
 	make -C libRobSock clean
-	make -C GUISample clean
-	make -C mouseSample clean
+	make -C AI_code clean
 
 distclean:
 	make -C simulator distclean
 	make -C Viewer distclean
 	make -C logplayer distclean
 	make -C libRobSock distclean
-	make -C GUISample distclean
-	make -C mouseSample distclean
+	make -C AI_code distclean
 

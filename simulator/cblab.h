@@ -60,6 +60,7 @@ public:
     double wallDistance(cbPoint &, double);
     double wallDistanceAboveHeight(cbPoint &p, double dir, double height);
 	double cornerDistance(cbPoint &, double, double);
+    void clearBeacons(){beacons.clear();}
 
 	inline cbTarget *Target(int i) { return targets[i]; }
 	inline cbBeacon *Beacon(int i) { return beacons[i]; }

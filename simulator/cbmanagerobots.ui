@@ -21,45 +21,11 @@
     <normaloff>:/images/buttons/mouse</normaloff>:/images/buttons/mouse</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_Agents">
-     <property name="title">
-      <string>Select a Robotic Agent</string>
+   <item row="2" column="0" colspan="2">
+    <widget class="QPushButton" name="pushButton_Close">
+     <property name="text">
+      <string>Hide</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton_LoadAgent">
-        <property name="text">
-         <string>Load Agent</string>
-        </property>
-        <property name="icon">
-         <iconset resource="default.qrc">
-          <normaloff>:/images/buttons/open</normaloff>:/images/buttons/open</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton_RemoveAgent">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Remove Selected</string>
-        </property>
-        <property name="icon">
-         <iconset resource="default.qrc">
-          <normaloff>:/images/buttons/delete</normaloff>:/images/buttons/delete</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QListView" name="listView_Agents">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item row="0" column="1" rowspan="2">
@@ -119,13 +85,6 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QPushButton" name="pushButton_Close">
-     <property name="text">
-      <string>Hide</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_AddRobot">
      <property name="enabled">
@@ -176,23 +135,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QRadioButton" name="radioButton_Cat">
-        <property name="text">
-         <string>Cat</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QRadioButton" name="radioButton_Mouse">
-        <property name="text">
-         <string>Mouse</string>
-        </property>
-       </widget>
-      </item>
       <item row="6" column="0" colspan="2">
        <widget class="QPushButton" name="pushButton_AddRobot">
         <property name="text">
@@ -201,6 +143,74 @@
         <property name="icon">
          <iconset resource="default.qrc">
           <normaloff>:/images/buttons/add</normaloff>:/images/buttons/add</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="radioButton_Mouse">
+          <property name="text">
+           <string>Mouse</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_Cat">
+          <property name="text">
+           <string>Cat</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_Agents">
+     <property name="title">
+      <string>Select a Robotic Agent</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="pushButton_LoadAgent">
+        <property name="text">
+         <string>Load Agent</string>
+        </property>
+        <property name="icon">
+         <iconset resource="default.qrc">
+          <normaloff>:/images/buttons/open</normaloff>:/images/buttons/open</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pushButton_RemoveAgent">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Remove Selected</string>
+        </property>
+        <property name="icon">
+         <iconset resource="default.qrc">
+          <normaloff>:/images/buttons/delete</normaloff>:/images/buttons/delete</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QListView" name="listView_Agents">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
         </property>
        </widget>
       </item>

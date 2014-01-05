@@ -224,6 +224,8 @@ void cbSimulator::reset()
         deleteRobot(i+1);
 	}
 
+    lab->clearBeacons();
+
     gui->appendMessage( "RESETTING" );
 	cout << "RESETTING\n";
 

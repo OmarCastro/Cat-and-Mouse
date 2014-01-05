@@ -56,6 +56,7 @@ bool cbClient::Reply(QHostAddress &a, unsigned short &p, cbParameters *param)
 	cnt += param->toXml(reply+cnt, REPLYMAXSIZE-cnt);
 	cnt += sprintf(reply+cnt, "</Reply>\n");
 
+    printf(reply);
     /* send reply to client */
     if (writeDatagram(reply, cnt+1, address, port) != cnt+1)
 	{

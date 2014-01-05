@@ -137,7 +137,7 @@ void CRQScene::drawLab( CRLab * l_b )
 	for ( vector< CRWall >::iterator wall = wl->begin() ; wall != wl->end() ;
       ++wall )
     {
-		if ( wall->wallHeight() > beacon->beaconHeight() )
+        if (beacon != bl->end() && wall->wallHeight() > beacon->beaconHeight() )
             color = colorBig ;   // color depends of height
         else
 			color = colorSmall ;   // color depends of height
