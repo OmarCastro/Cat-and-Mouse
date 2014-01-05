@@ -36,7 +36,6 @@ void DetermineAction(int beaconToFollow, double *lPow, double *rPow, int *state)
 {
     static int counter=0;
     static float CollisionOrientation = 0.0;
-    static int _beaconToFollow = 0;
 
     bool   beaconReady;
     static struct beaconMeasure beacon; // beacon sensor
@@ -93,11 +92,6 @@ void DetermineAction(int beaconToFollow, double *lPow, double *rPow, int *state)
                 }
                 counter++;
                 return;
-            }
-        } else {
-            _beaconToFollow ++;
-            if(_beaconToFollow >= GetNumberOfBeacons()){
-                _beaconToFollow = 0;
             }
         }
     }

@@ -230,50 +230,68 @@ void cbBeaconSensor::update()
 {
 	popMeasure();
 
-	cbBeacon *b = robot->getSimulator()->Lab()->Beacon(beaconToFollow);
-	cbLab *lab=robot->getSimulator()->Lab();
-	double delta = robot->Center().angle(b->Center()) - robot->Dir();
+    cbLab *lab=robot->getSimulator()->Lab();
 
-	if (delta > M_PI) delta -= (2*M_PI);
-	else if (delta < -M_PI) delta += (2*M_PI);
+    bool already_visible = false;
+    double nearestBeacon = 7.0; // BEACON_DISTANCE_LIMIT
 
-	if(cycToMeasure>1) {
-		cycToMeasure--;  // no update, wait cycToMeasureCycles
-		ready = false;
-		resetBeaconVisible();  // invalidate Measure
-	}
-	else {
-             double distRobotToBeacon = robot->Center().distance(b->Center());
-             if( distRobotToBeacon > 7.0 ) {   // BEACON_DISTANCE_LIMIT
-	         resetBeaconVisible();
-             }
-             else {
-	     //check if there is a wall hiding beacon
-	         double distShadow = lab->wallDistanceAboveHeight(robot->Center(),robot->Center().angle(b->Center()),b->Height());
-	         if( distShadow !=-1 && distShadow < robot->Center().distance(b->Center())) 
-	              resetBeaconVisible();
-	         else {
-	             measure.beaconVisible=true;
-	             /* ideal value */
-	             ideal = delta;
-	             /* noisy value */
-	             double randNoise = randNormal(0.0,noise);
-	             value = delta + randNoise;
-	             if (value > M_PI) value -= 2*M_PI; else if (value < -M_PI) value += 2*M_PI;
+    if(cycToMeasure>1) {
+        cycToMeasure--;  // no update, wait cycToMeasureCycles
+        ready = false;
+        resetBeaconVisible();  // invalidate Measure
+    }
 
-	             // check sensor aperture
-                     //if(fabs(value) <= M_PI/3)
-                     if(fabs(value) <= sensorAperture)
-	                 /* noisy value in degrees round to integer */
-	                 measure.beaconDir = floor(value*180.0/M_PI + 0.5);
-	             else
-                         resetBeaconVisible();
+    for(int i=beaconToFollow;i<lab->nBeacons();++i){
+        cbBeacon *b = lab->Beacon(i);
+
+        double delta = robot->Center().angle(b->Center()) - robot->Dir();
+
+        if (delta > M_PI) delta -= (2*M_PI);
+        else if (delta < -M_PI) delta += (2*M_PI);
+
+
+        else {
+                 double distRobotToBeacon = robot->Center().distance(b->Center());
+                 if( distRobotToBeacon > nearestBeacon ) {
+                 continue;
                  }
-	     }
+                 else {
+             //check if there is a wall hiding beacon
+                 double distShadow = lab->wallDistanceAboveHeight(robot->Center(),robot->Center().angle(b->Center()),b->Height());
+                 if( distShadow !=-1 && distShadow < robot->Center().distance(b->Center()))
+                      continue;
+                 else {
+                     measure.beaconVisible=true;
 
-	     cycToMeasure = latency;
-	     ready=true;
-	}
+                     /* ideal value */
+                     ideal = delta;
+                     /* noisy value */
+                     double randNoise = randNormal(0.0,noise);
+                     value = delta + randNoise;
+                     if (value > M_PI) value -= 2*M_PI; else if (value < -M_PI) value += 2*M_PI;
+                        already_visible = true;
+                        nearestBeacon = distRobotToBeacon;
+
+                     // check sensor aperture
+                         //if(fabs(value) <= M_PI/3)
+                         if(fabs(value) <= sensorAperture)
+                         /* noisy value in degrees round to integer */
+                         measure.beaconDir = floor(value*180.0/M_PI + 0.5);
+                     else
+                         continue;
+                     }
+             }
+        }
+    }
+
+    if(already_visible == false){
+        resetBeaconVisible();
+    }
+
+    cycToMeasure = latency;
+    ready=true;
+
+
 	//cerr << "beacon_update ready = " << ready << " dir = " << measure.beaconDir << " visible = " << measure.beaconDir << "\n";
 	
 	pushMeasure(new cbBeaconMeasure(measure));

@@ -9,7 +9,8 @@ sleep 1
 
 sleep 1
 
-#(cd AI_code; LD_LIBRARY_PATH=../libRobSock/ ./GUISample -pos 3 -robname SAMPLE_1, -type cat -nogui) &
+#(cd TesteSockets/bin; java jClient -robname Human -pos 3 -host localhost) &
+(cd AI_code; LD_LIBRARY_PATH=../libRobSock/ ./GUISample -pos 3 -robname SAMPLE_1, -type cat -nogui) &
 (cd AI_code; LD_LIBRARY_PATH=../libRobSock/ ./GUISample -pos 1 -robname SAMPLE_1, -type cat -nogui) &
 (cd AI_code; LD_LIBRARY_PATH=../libRobSock/ ./GUISample -pos 4 -robname SAMPLE_1, -type cat -nogui) &
 

@@ -58,6 +58,7 @@ using std::cout;
 using std::ofstream;
 
 
+int ndeadmouse = 0;
 
 /*!
 	\constant LAB
@@ -766,7 +767,16 @@ void cbSimulator::RobotActions()
 				robot->requestSensor(action.sensorRequests[r]);
 			}
 
-            if (action.sayReceived) robot->setSayMessage(action.sayMessage);
+            if (action.sayReceived){
+                if(action.sayMessage[0] == 'm'){
+                    ndeadmouse ++;
+                    if(ndeadmouse == lab->nBeacons()){
+                        stop();
+                    }
+                }
+                robot->setSayMessage(action.sayMessage);
+
+            }
 
 
 
